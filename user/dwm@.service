@@ -7,6 +7,7 @@ Requisite=X11@%i.target
 Environment=DISPLAY=%I
 Type=notify
 NotifyAccess=all
-ExecStart=/usr/bin/env ssh-agent dwm
+; ExecStart=/usr/bin/env ssh-agent dwm
+ExecStart=/usr/bin/env bash -c 'exec 8>${XDG_RUNTIME_DIR}/x11-wm@%I; exec awesome'
 SyslogIdentifier=dwm
 Restart=no

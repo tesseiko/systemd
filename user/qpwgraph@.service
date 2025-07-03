@@ -1,5 +1,5 @@
 [Unit]
-Description=Volume management system tray applet
+Description=qpwgraph applet
 After=X11@%i.target
 Requisite=X11@%i.target
 
@@ -7,12 +7,12 @@ Requisite=X11@%i.target
 Environment=DISPLAY=%I
 
 Type=simple
-ExecStart=/usr/bin/env pasystray --volume-max=100
+ExecStart=/usr/bin/env qpwgraph -m
 # Takes the path of a checked-out repository in which we want to zip for 
 # release. The script will copy the directory and strip anything that is git 
 # ignored and remove any git files
 
-SyslogIdentifier=pasystray
+SyslogIdentifier=qpwgraph
 
 [Install]
 WantedBy=X11@%i.target

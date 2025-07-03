@@ -3,24 +3,33 @@ Description=jakcd service
 
 [Service]
 
+; realime=R no realtime=r
+; Gen : Scarlett
+; Camera: Camera
+; Tube : firepod Tube
+; Mobile : firestudio mikri tou tassou
+; Device : build in card of laptop
+Environment="INPUT_CARD=Camera"
+Environment="OUTPUT_CARD=Gen"
+Environment="SAMPLERATE=48000"
+Environment="REALTIME=R"
+Environment="BUFFER=2048"
+
 Type=simple
 
 ExecStartPre=/usr/bin/bash -c "while ! pgrep pulseaudio;do sleep 1s;done;sleep 2s"
 ExecStartPre=-/usr/bin/pacmd suspend true
 
-#ExecStart=/usr/bin/jackd -u -R -dalsa -r48000 -p1024 -n2 -Xraw -D -Chw:Device -Phw:Audiophile192
-#ExecStart=/usr/bin/jackd -u -dalsa -r44100 -p2048 -n2 -Xraw -D -Chw:Device -Phw:Audiophile192
-#ExecStart=/usr/bin/jackd -u -dalsa -r44100 -p1024 -n2 -Xraw -D -Chw:Device -Phw:Device
-#ExecStart=/usr/bin/jackd -u -dalsa -r48000 -p2048 -n2 -Xraw -D -Chw:Audiophile192 -Phw:Audiophile192
-#ExecStart=/usr/bin/jackd -u -dalsa -r48000 -p1024 -n2 -Xraw -D -Chw:Audiophile192 -Phw:Audiophile192
-ExecStart=/usr/bin/jackd -u -R -dalsa -r44100 -p4096 -n2 -Xraw -D -Chw:Audiophile192 -Phw:Audiophile192
-#ExecStart=/usr/bin/jackd -u -dalsa -r192000 -p2048 -n2 -Xraw -D -Chw:Audiophile192 -Phw:Audiophile192
+ExecStart=/usr/bin/jackd -u -${REALTIME} -dalsa -r${SAMPLERATE} -p${BUFFER} -n4 -Xraw -Chw:${INPUT_CARD} -Phw:${OUTPUT_CARD}
 
 ExecStartPost=/usr/bin/bash -c "while ! pgrep jackd;do sleep 1s;done;sleep 2s"
-ExecStartPost=-/usr/bin/pactl load-module module-jack-sink channels=2
-ExecStartPost=-/usr/bin/pactl load-module module-jack-source channels=2
-ExecStartPost=-/usr/bin/pactl load-module module-jack-sink channels=2 connect=false
-ExecStartPost=-/usr/bin/pactl load-module module-jack-source channels=2 connect=false
+ExecStartPost=-/usr/bin/pactl load-module module-jack-sink sink_name=MainSink sink_properties=device.description=Speakers channels=2
+ExecStartPost=-/usr/bin/pactl load-module module-jack-source source_name=MicSource source_properties=device.description=Mic channels=2
+ExecStartPost=-/usr/bin/pactl load-module module-jack-sink sink_name=LoopSink sink_properties=device.description=LoopIn channels=2 connect=false
+ExecStartPost=-/usr/bin/pactl load-module module-jack-source source_name=LoopSource source_properties=device.description=LoopOut channels=2 connect=false
+
+; ExecStartPost=-/usr/bin/pactl load-module module-echo-cancel source_name=MicEchoCancel source_properties=device.description=MicEchoCancelOut channels=2 connect=false
+
 ExecStartPost=-/usr/bin/pacmd set-default-sink jack_out
 ExecStartPost=-/usr/bin/pacmd set-default-source jack_in
 

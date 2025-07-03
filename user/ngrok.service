@@ -1,0 +1,9 @@
+
+[Unit]
+Description=ngrok service
+
+[Service]
+ExecStart=ngrok tcp 22
+
+[Install]
+WantedBy=default.target

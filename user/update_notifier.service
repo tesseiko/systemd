@@ -4,8 +4,8 @@ Description=Checks for available updates
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/sh -c '/usr/bin/yay -Qu | /usr/bin/grep linux && /usr/bin/notify-send Updates "linux" || true'
-ExecStart=/usr/bin/sh -c '/usr/bin/yay -Qu | /usr/bin/wc -l | /usr/bin/xargs /usr/bin/echo 10 \< | /usr/bin/bc | /usr/bin/grep 1 && /usr/bin/notify-send Updates "Update system" || true'
+ExecStart=/usr/bin/sh -c '/usr/bin/paru -Qu | /usr/bin/grep linux && /usr/bin/notify-send Updates "linux" || true'
+ExecStart=/usr/bin/sh -c '/usr/bin/paru -Qu | /usr/bin/wc -l | /usr/bin/xargs /usr/bin/echo 10 \< | /usr/bin/bc | /usr/bin/grep 1 && /usr/bin/notify-send Updates "Update system" || true'
 
 #ExecStart=(/usr/bin/yay -Qu )&&( /usr/bin/notify-send Updates "linux")
 [Install]
