@@ -1,7 +1,7 @@
 [Unit]
 Description=qpwgraph applet
-After=X11@%i.target
-Requisite=X11@%i.target
+; After=X11@%i.target
+; Requisite=X11@%i.target
 
 [Service]
 Environment=DISPLAY=%I
@@ -15,4 +15,5 @@ ExecStart=/usr/bin/env qpwgraph -m
 SyslogIdentifier=qpwgraph
 
 [Install]
-WantedBy=X11@%i.target
+; WantedBy=X11@%i.target
+WantedBy=default.target
