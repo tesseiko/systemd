@@ -1,0 +1,15 @@
+# Managed by PipeWire Controller — runs one filter chain per instance.
+[Unit]
+Description=PipeWire Controller filter chain: %i
+After=pipewire.service
+BindsTo=pipewire.service
+
+[Service]
+Type=simple
+Environment=PIPEWIRE_CONFIG_DIR=%h/.config/pipewire-controller/generated
+ExecStart=/usr/bin/pipewire -c %i.conf
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=pipewire.service
