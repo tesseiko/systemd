@@ -8,6 +8,8 @@ Wants=network-online.target
 
 Type=simple
 
+ExecCondition=/bin/bash -c '/usr/bin/ssh-keyscan -t ed25519 -p 22 192.168.1.100'
+
 ExecStart=/usr/bin/sshfs -f lef@192.168.1.100:/home/lef/disks %h/Music/sftp
 
 ExecStop=/usr/bin/fusermount -u  %h/Music/sftp
